@@ -22,7 +22,7 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:26.0.1'
     implementation 'commons-io:commons-io:2.18.0'
     implementation 'commons-codec:commons-codec:1.17.1'
-    implementation 'it.italiandudes:idl:1.0.7'
+    implementation 'it.italiandudes:idl:1.0.8'
     implementation 'org.json:json:20240303'
 }
 
