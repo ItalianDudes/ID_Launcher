@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 public final class ControllerSceneTabDnD_Visualizer {
 
-
     /*
     *
     * TODO List:
@@ -34,7 +33,7 @@ public final class ControllerSceneTabDnD_Visualizer {
     *   - All'apertura dell'app il comportamento del launcher se chiudersi, minimizzarsi o rimanere aperto
     *   - Quali tipi versioni dell'app accettare (RELEASE, BETA, ALFA, DEV)
     * - Inserire da qualche parte nella tab dell'app che sono state trovate versioni non compatibili con il launcher.
-    *
+    * - Fare in modo che la chiusura del D&D Visualizer non chiuda anche il launcher
     * */
 
     // Constants
