@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher;
 
+import com.sun.javafx.tk.Toolkit;
 import it.italiandudes.idl.common.JarHandler;
 
 import java.io.File;
@@ -14,7 +15,7 @@ public class ReflectionTest {
     public static void main(String[] args) throws Throwable {
 
         // Percorso del JAR da lanciare
-        File jarFile = new File("C:\\Users\\Hacker6329\\Desktop\\D&D Visualizer\\tester.jar");
+        File jarFile = new File("C:\\Users\\Hacke\\Desktop\\Tester\\DnD_Visualizer-1.3.6.7D.jar");
 
         Attributes attributes = JarHandler.ManifestReader.readJarManifest(jarFile);
         if (!JarHandler.ManifestReader.containsKey(attributes, "ID-Launcher-Enabled") || !JarHandler.ManifestReader.getValue(attributes, "ID-Launcher-Enabled").equals("true")) {

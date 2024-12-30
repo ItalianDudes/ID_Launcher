@@ -30,8 +30,6 @@ public final class ControllerSceneTabDnD_Visualizer {
     /*
     *
     * TODO List:
-    * - If check nel Dnd visualizer nel metodo Client.start togliendo launch(args) e mettendo un popup stage
-    * - Controllare che il D&D visualizer se avviato da launcher abbia il suo JAR_POSITION in Defs corretto e che quindi non punti al launcher
     * - Implementare dei settaggi specifici per ogni app, tra cui cose come:
     *   - All'apertura dell'app il comportamento del launcher se chiudersi, minimizzarsi o rimanere aperto
     *   - Quali tipi versioni dell'app accettare (RELEASE, BETA, ALFA, DEV)
@@ -98,6 +96,7 @@ public final class ControllerSceneTabDnD_Visualizer {
                 buttonDownload.setVisible(false);
                 buttonStart.setVisible(true);
                 comboBoxVersionSelector.getItems().addAll(jarList.stream().map(IDVersion::new).collect(Collectors.toList()));
+                comboBoxVersionSelector.getSelectionModel().selectFirst();
                 comboBoxVersionSelector.setVisible(true);
             });
         }
@@ -180,6 +179,8 @@ public final class ControllerSceneTabDnD_Visualizer {
                             Class<?> dndVisualizerClass = classLoader.loadClass("it.italiandudes.dnd_visualizer.DnD_Visualizer");
                             Method mainMethod = dndVisualizerClass.getMethod("launcherMain", ClassLoader.class, String[].class);
                             mainMethod.invoke(null, classLoader, new String[]{});
+                            // mainMethod.invoke() blocks until the thread is "dead", but with javafx after the main calls javafx the thread dies
+                            // TODO: find a way to block here until the D&D Visualizer closes
                         } catch (Exception e) {
                             Logger.log(e);
                         }
