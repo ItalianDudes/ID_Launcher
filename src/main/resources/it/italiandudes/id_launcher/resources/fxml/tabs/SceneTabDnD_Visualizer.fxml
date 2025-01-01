@@ -64,8 +64,8 @@
                         </GridPane>
                      </children>
                   </GridPane>
-                  <ProgressBar fx:id="progressBarDownload" maxWidth="1.7976931348623157E308" progress="0.0" style="-fx-font-size: 24px;" visible="false" GridPane.rowIndex="2" />
-                  <Label fx:id="labelDownloadPercentage" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="0%" textAlignment="CENTER" visible="false" GridPane.rowIndex="2" />
+                  <ProgressBar fx:id="progressBarDownload" maxWidth="1.7976931348623157E308" style="-fx-font-size: 24px;" visible="false" GridPane.rowIndex="2" />
+                  <Label fx:id="labelDownload" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="DOWNLOAD IN CORSO..." textAlignment="CENTER" visible="false" GridPane.rowIndex="2" />
                   <GridPane alignment="CENTER" hgap="10.0" GridPane.rowIndex="2">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />

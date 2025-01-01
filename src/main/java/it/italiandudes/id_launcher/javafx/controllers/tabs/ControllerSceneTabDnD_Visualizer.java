@@ -46,8 +46,8 @@ public final class ControllerSceneTabDnD_Visualizer {
     // Graphic Elements
     @FXML private TextField textFieldReleaseTitle;
     @FXML private TextArea textAreaPatchNotes;
-    // @FXML private ProgressBar progressBarDownload;
-    // @FXML private Label labelDownloadPercentage;
+    @FXML private ProgressBar progressBarDownload;
+    @FXML private Label labelDownload;
     @FXML private Button buttonDownload;
     @FXML private ComboBox<IDVersion> comboBoxVersionSelector;
     @FXML private Button buttonStart;
@@ -108,9 +108,8 @@ public final class ControllerSceneTabDnD_Visualizer {
         comboBoxVersionSelector.getSelectionModel().clearSelection();
         comboBoxVersionSelector.getItems().clear();
         comboBoxVersionSelector.setVisible(false);
-        // labelDownloadPercentage.setVisible(false);
-        // labelDownloadPercentage.setText("0%");
-        // progressBarDownload.setVisible(false);
+        labelDownload.setVisible(false);
+        progressBarDownload.setVisible(false);
         buttonDownload.setVisible(true);
         buttonDownload.setDisable(true);
         buttonStart.setVisible(false);
@@ -142,10 +141,21 @@ public final class ControllerSceneTabDnD_Visualizer {
                             buttonDownload.setDisable(false);
                             return null;
                         }
+                        Platform.runLater(() -> {
+                            buttonDownload.setVisible(false);
+                            progressBarDownload.setVisible(true);
+                            labelDownload.setVisible(true);
+                        });
                         try {
                             if (!INSTALLATION_DIR.exists()) {
                                 if (!INSTALLATION_DIR.mkdir()) {
-                                    buttonDownload.setDisable(true);
+                                    /*Platform.runLater(() -> {
+                                        progressBarDownload.setVisible(false);
+                                        labelDownload.setVisible(false);
+                                        buttonDownload.setDisable(false);
+                                        buttonDownload.setVisible(true);
+                                    });*/
+                                    Platform.runLater(ControllerSceneTabDnD_Visualizer.this::resetController);
                                     throw new IOException("An error has occurred during mkdir");
                                 }
                             }
@@ -153,7 +163,8 @@ public final class ControllerSceneTabDnD_Visualizer {
                             postInitialize();
                         } catch (IOException e) {
                             Logger.log(e);
-                            buttonDownload.setDisable(true);
+                            // buttonDownload.setDisable(true);
+                            Platform.runLater(ControllerSceneTabDnD_Visualizer.this::resetController);
                         }
                         return null;
                     }
