@@ -27,6 +27,7 @@ public final class Defs {
     // JSON Settings
     public static final class SettingsKeys {
         public static final String ENABLE_DARK_MODE = "enableDarkMode";
+        public static final String RELEASE_CHANNEL = "releaseChannel";
     }
 
     // Resources Location
@@ -45,8 +46,8 @@ public final class Defs {
 
         // JSON
         public static final class JSON {
-            public static final String JSON_CLIENT_SETTINGS = "client_settings.json";
-            public static final String DEFAULT_JSON_CLIENT_SETTINGS = PROJECT_RESOURCES_ROOT + "json/" + JSON_CLIENT_SETTINGS;
+            public static final String JSON_LAUNCHER_SETTINGS = "launcher_settings.json";
+            public static final String DEFAULT_JSON_LAUNCHER_SETTINGS = PROJECT_RESOURCES_ROOT + "json/" + JSON_LAUNCHER_SETTINGS;
         }
 
         // Images

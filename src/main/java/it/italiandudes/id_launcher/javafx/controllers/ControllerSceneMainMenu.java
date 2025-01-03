@@ -22,10 +22,10 @@ public final class ControllerSceneMainMenu {
     // Initialize
     @FXML
     private void initialize() {
-        sceneControllerTabDnD_Visualizer = SceneTabDnD_Visualizer.getScene();
+        sceneControllerTabDnD_Visualizer = SceneTabDnD_Visualizer.getScene(this);
         tabDnD_Visualizer.setContent(sceneControllerTabDnD_Visualizer.getParent());
 
-        sceneControllerTabSettings = SceneTabSettings.getScene();
+        sceneControllerTabSettings = SceneTabSettings.getScene(this);
         tabSettings.setContent(sceneControllerTabSettings.getParent());
     }
 

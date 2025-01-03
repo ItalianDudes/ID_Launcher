@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher.javafx.scene.tabs;
 
+import it.italiandudes.id_launcher.javafx.controllers.ControllerSceneMainMenu;
 import it.italiandudes.idl.common.Logger;
 import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.components.SceneController;
@@ -15,11 +16,13 @@ public final class SceneTabDnD_Visualizer {
 
     // Scene Generator
     @NotNull
-    public static SceneController getScene() {
+    public static SceneController getScene(@NotNull final ControllerSceneMainMenu mainMenuController) {
         try {
             FXMLLoader loader = new FXMLLoader(Defs.Resources.get(JFXDefs.Resources.FXML.Tabs.FXML_TAB_DND_VISUALIZER));
             Parent root = loader.load();
             ControllerSceneTabDnD_Visualizer controller = loader.getController();
+            controller.setMainMenuController(mainMenuController);
+            controller.configurationComplete();
             return new SceneController(root, controller);
         } catch (IOException e) {
             Logger.log(e);

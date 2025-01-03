@@ -1,12 +1,31 @@
 package it.italiandudes.id_launcher.javafx;
 
 import it.italiandudes.id_launcher.utils.Defs;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public final class JFXDefs {
+
+    // Service Starter
+    public static void startServiceTask(@NotNull final Runnable runnable) {
+        new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() {
+                        runnable.run();
+                        return null;
+                    }
+                };
+            }
+        }.start();
+    }
 
     // App Info
     public static final class AppInfo {
