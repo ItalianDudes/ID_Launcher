@@ -1,6 +1,7 @@
 package it.italiandudes.id_launcher.javafx.utils;
 
-import it.italiandudes.id_launcher.release.ReleaseType;
+import it.italiandudes.id_launcher.enums.LauncherBehaviour;
+import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.id_launcher.utils.Defs;
 import it.italiandudes.idl.common.JSONManager;
 import it.italiandudes.idl.common.JarHandler;
@@ -50,6 +51,13 @@ public final class Settings {
         } catch (JSONException e) {
             SETTINGS.remove(Defs.SettingsKeys.RELEASE_CHANNEL);
             SETTINGS.put(Defs.SettingsKeys.RELEASE_CHANNEL, ReleaseType.RELEASE.ordinal());
+        }
+        try {
+            int launcherBehaviour = SETTINGS.getInt(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR);
+            if (launcherBehaviour < 0 || launcherBehaviour >= LauncherBehaviour.values().length) throw new JSONException("Launcher Behaviour out of bounds");
+        } catch (JSONException e) {
+            SETTINGS.remove(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR);
+            SETTINGS.put(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR, LauncherBehaviour.CLOSE_ON_LAUNCH.ordinal());
         }
         writeJSONSettings();
     }

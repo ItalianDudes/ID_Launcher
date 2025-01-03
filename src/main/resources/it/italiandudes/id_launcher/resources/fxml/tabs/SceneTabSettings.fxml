@@ -40,6 +40,7 @@
               <rowConstraints>
                 <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Attiva Tema Scuro">
@@ -58,6 +59,12 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="comboBoxReleaseType" promptText="Tipo di Release" style="-fx-font-size: 16px; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Comportamento Launcher all'Avvio di un App" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Lucida Sans Demibold" size="16.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="comboBoxLauncherBehaviour" promptText="Comportamento" style="-fx-font-size: 16px; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <GridPane hgap="5.0" GridPane.rowIndex="2">

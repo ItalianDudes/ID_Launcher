@@ -28,6 +28,7 @@ public final class Defs {
     public static final class SettingsKeys {
         public static final String ENABLE_DARK_MODE = "enableDarkMode";
         public static final String RELEASE_CHANNEL = "releaseChannel";
+        public static final String LAUNCHER_BEHAVIOUR = "launcherBehaviour";
     }
 
     // Resources Location

@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher.javafx.controllers.tabs;
 
+import it.italiandudes.id_launcher.javafx.Client;
 import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.alerts.ErrorAlert;
 import it.italiandudes.id_launcher.javafx.controllers.ControllerSceneMainMenu;
@@ -7,7 +8,7 @@ import it.italiandudes.id_launcher.javafx.utils.Settings;
 import it.italiandudes.id_launcher.release.IDRelease;
 import it.italiandudes.id_launcher.release.IDReleaseManager;
 import it.italiandudes.id_launcher.release.IDVersion;
-import it.italiandudes.id_launcher.release.ReleaseType;
+import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.id_launcher.utils.Defs;
 import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.Logger;
@@ -30,15 +31,6 @@ import java.util.jar.Attributes;
 import java.util.stream.Collectors;
 
 public final class ControllerSceneTabDnD_Visualizer {
-
-    /*
-    *
-    * TODO List:
-    * - All'apertura dell'app il comportamento del launcher se chiudersi, minimizzarsi o rimanere aperto
-    * - Inserire da qualche parte nella tab dell'app che sono state trovate versioni non compatibili con il launcher
-    * - Fare in modo che la chiusura del D&D Visualizer non chiuda anche il launcher
-    * - Dedicare una cartella ad ogni versione del D&D Visualizer che l'utente ha installato tramite launcher
-    * */
 
     // Main Link
     private ControllerSceneMainMenu mainMenuController = null;
@@ -84,26 +76,33 @@ public final class ControllerSceneTabDnD_Visualizer {
     private void postInitialize() throws IOException { // Non-EDT Initialize
         Platform.runLater(this::resetController);
         refreshReleases();
-        File[] jars = INSTALLATION_DIR.listFiles((dir, name) -> name.startsWith(APP_NAME) && name.endsWith(".jar"));
-        String filename = latest != null?latest.getFilename():null;
-        if (jars == null || jars.length == 0 || Arrays.stream(jars).map(File::getName).noneMatch(Predicate.isEqual(filename))) {
+        File[] versionDirs = INSTALLATION_DIR.listFiles();
+        ArrayList<@NotNull File> jars = new ArrayList<>();
+        if (versionDirs != null) {
+            Arrays.stream(versionDirs).forEach(version -> {
+                File[] jarFiles = version.listFiles((dir, name) -> name.startsWith(APP_NAME) && name.endsWith(".jar"));
+                if (jarFiles != null && jarFiles.length > 0) jars.addAll(Arrays.asList(jarFiles));
+            });
+        }
+        String latestFilename = latest != null?latest.getFilename():null;
+        if (jars.isEmpty() || jars.stream().map(File::getName).noneMatch(Predicate.isEqual(latestFilename))) {
             Platform.runLater(() -> {
                 buttonDownload.setDisable(false);
                 buttonDownload.setVisible(true);
             });
         } else {
-            List<File> jarList = new ArrayList<>();
+            List<File> launchableJarList = new ArrayList<>();
             for (File jar : jars) {
                 Attributes manifest = JarHandler.ManifestReader.readJarManifest(jar);
                 if (JarHandler.ManifestReader.containsKey(manifest, "ID-Launcher-Enabled") && JarHandler.ManifestReader.getValue(manifest, "ID-Launcher-Enabled").equals("true")) {
-                    jarList.add(jar);
+                    launchableJarList.add(jar);
                 }
             }
             Platform.runLater(() -> {
                 buttonDownload.setDisable(true);
                 buttonDownload.setVisible(false);
                 buttonStart.setVisible(true);
-                comboBoxVersionSelector.getItems().addAll(jarList.stream().map(IDVersion::new).collect(Collectors.toList()));
+                comboBoxVersionSelector.getItems().addAll(launchableJarList.stream().map(IDVersion::new).collect(Collectors.toList()));
                 comboBoxVersionSelector.getSelectionModel().selectFirst();
                 comboBoxVersionSelector.setVisible(true);
             });
@@ -201,9 +200,10 @@ public final class ControllerSceneTabDnD_Visualizer {
                 URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, ClassLoader.getSystemClassLoader());
                 Class<?> dndVisualizerClass = classLoader.loadClass("it.italiandudes.dnd_visualizer.DnD_Visualizer");
                 Method mainMethod = dndVisualizerClass.getMethod("launcherMain", ClassLoader.class, String[].class);
+                Logger.log("Starting D&D Visualizer, launcher closing...");
                 mainMethod.invoke(null, classLoader, new String[]{});
-                // mainMethod.invoke() blocks until the thread is "dead", but with javafx after the main calls javafx the thread dies
-                // TODO: find a way to block here until the D&D Visualizer closes
+                Platform.runLater(() -> Client.getStage().hide());
+                // TODO: implement launcher behaviour
             } catch (Exception e) {
                 Logger.log(e);
             }

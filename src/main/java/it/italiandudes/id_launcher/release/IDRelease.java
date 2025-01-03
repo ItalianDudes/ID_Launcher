@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher.release;
 
+import it.italiandudes.id_launcher.enums.ReleaseType;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;

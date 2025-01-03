@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher.release;
 
+import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.idl.common.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,10 +55,11 @@ public final class IDReleaseManager {
     public static void downloadRelease(@NotNull final IDRelease release, @NotNull File dest) throws IOException {
         URL url = new URL(release.getDownloadLink());
         InputStream is = url.openConnection().getInputStream();
-        if (dest.isDirectory()) {
-            dest = new File(dest.getAbsolutePath() + File.separator + release.getFilename());
+        String releaseDestination = dest.getAbsolutePath() + File.separator + release.getVersion() + File.separator + release.getFilename();
+        if (!new File(releaseDestination).mkdirs()) {
+            throw new IOException("An error has occurred while creating path for release " + releaseDestination);
         }
-        Files.copy(is, Paths.get(dest.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(is, Paths.get(releaseDestination), StandardCopyOption.REPLACE_EXISTING);
         is.close();
     }
     @Nullable

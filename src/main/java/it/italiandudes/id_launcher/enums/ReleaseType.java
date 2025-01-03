@@ -1,4 +1,4 @@
-package it.italiandudes.id_launcher.release;
+package it.italiandudes.id_launcher.enums;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

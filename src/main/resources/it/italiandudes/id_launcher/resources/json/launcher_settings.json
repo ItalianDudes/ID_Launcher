@@ -1,4 +1,5 @@
 {
   "enableDarkMode": true,
-  "releaseChannel": 0
+  "releaseChannel": 0,
+  "launcherBehaviour": 0
 }

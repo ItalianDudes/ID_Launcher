@@ -1,8 +1,9 @@
 package it.italiandudes.id_launcher.javafx.controllers.tabs;
 
+import it.italiandudes.id_launcher.enums.LauncherBehaviour;
 import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.controllers.ControllerSceneMainMenu;
-import it.italiandudes.id_launcher.release.ReleaseType;
+import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.idl.common.Logger;
 import it.italiandudes.id_launcher.javafx.Client;
 import it.italiandudes.id_launcher.javafx.alerts.ErrorAlert;
@@ -43,6 +44,7 @@ public final class ControllerSceneTabSettings {
     @FXML private ImageView imageViewEnableDarkMode;
     @FXML private ToggleButton toggleButtonEnableDarkMode;
     @FXML private ComboBox<ReleaseType> comboBoxReleaseType;
+    @FXML private ComboBox<LauncherBehaviour> comboBoxLauncherBehaviour;
 
     // Initialize
     @FXML
@@ -56,6 +58,8 @@ public final class ControllerSceneTabSettings {
                 else imageViewEnableDarkMode.setImage(LIGHT_MODE);
                 comboBoxReleaseType.getItems().addAll(ReleaseType.values());
                 comboBoxReleaseType.getSelectionModel().select(Settings.getSettings().getInt(Defs.SettingsKeys.RELEASE_CHANNEL));
+                comboBoxLauncherBehaviour.getItems().addAll(LauncherBehaviour.values());
+                comboBoxLauncherBehaviour.getSelectionModel().select(Settings.getSettings().getInt(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR));
             });
         });
     }
@@ -83,6 +87,11 @@ public final class ControllerSceneTabSettings {
             ThemeHandler.setConfigTheme();
             try {
                 Settings.getSettings().put(Defs.SettingsKeys.RELEASE_CHANNEL, comboBoxReleaseType.getSelectionModel().getSelectedItem().ordinal());
+            } catch (JSONException e) {
+                Logger.log(e);
+            }
+            try {
+                Settings.getSettings().put(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR, comboBoxLauncherBehaviour.getSelectionModel().getSelectedItem().ordinal());
             } catch (JSONException e) {
                 Logger.log(e);
             }
