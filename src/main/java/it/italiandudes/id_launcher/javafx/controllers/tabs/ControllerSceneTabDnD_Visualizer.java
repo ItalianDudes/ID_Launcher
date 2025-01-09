@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher.javafx.controllers.tabs;
 
+import it.italiandudes.id_launcher.enums.LauncherBehaviour;
 import it.italiandudes.id_launcher.javafx.Client;
 import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.alerts.ErrorAlert;
@@ -200,10 +201,28 @@ public final class ControllerSceneTabDnD_Visualizer {
                 URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, ClassLoader.getSystemClassLoader());
                 Class<?> dndVisualizerClass = classLoader.loadClass("it.italiandudes.dnd_visualizer.DnD_Visualizer");
                 Method mainMethod = dndVisualizerClass.getMethod("launcherMain", ClassLoader.class, String[].class);
-                Logger.log("Starting D&D Visualizer, launcher closing...");
+                LauncherBehaviour behaviour = LauncherBehaviour.values()[Settings.getSettings().getInt(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR)];
+                switch (behaviour) {
+                    case CLOSE_ON_LAUNCH:
+                        Logger.log("Starting D&D Visualizer, launcher closing...");
+                        Platform.runLater(() -> Client.getStage().hide());
+                        break;
+
+                    case MINIMIZE:
+                        Logger.log("Starting D&D Visualizer, minimizing launcher...");
+                        Platform.runLater(() -> Client.getStage().setIconified(true));
+                        break;
+
+                    case STAY_OPEN:
+                        Logger.log("Starting D&D Visualizer, staying open...");
+                        // TODO: implement loop hole to keep disabled the start button until app is closed
+                        break;
+                }
                 mainMethod.invoke(null, classLoader, new String[]{});
-                Platform.runLater(() -> Client.getStage().hide());
-                // TODO: implement launcher behaviour
+                if (behaviour != LauncherBehaviour.CLOSE_ON_LAUNCH) {
+                    Logger.log("D&D Visualizer closed, restoring start...");
+                    Platform.runLater(() -> buttonStart.setDisable(false));
+                }
             } catch (Exception e) {
                 Logger.log(e);
             }
