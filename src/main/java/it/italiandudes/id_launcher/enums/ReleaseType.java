@@ -4,10 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public enum ReleaseType {
-    RELEASE,
-    BETA,
-    ALPHA,
-    DEV;
+    RELEASE("RELEASE"),
+    BETA("BETA"),
+    ALPHA("ALPHA [POTENZIALMENTE INSTABILE]"),
+    DEV("DEV BUILD [ALTAMENTE SCONSIGLIATO]");
 
     // Static
     @Nullable
@@ -28,10 +28,12 @@ public enum ReleaseType {
     }
 
     // Attributes
+    @NotNull private final String name;
     @NotNull private final String VERSION_MARKER;
 
     // Constructor
-    ReleaseType() {
+    ReleaseType(@NotNull final String name) {
+        this.name = name;
         this.VERSION_MARKER = String.valueOf(name().charAt(0));
     }
 
@@ -41,6 +43,6 @@ public enum ReleaseType {
     }
     @Override @NotNull
     public String toString() {
-        return name();
+        return name;
     }
 }

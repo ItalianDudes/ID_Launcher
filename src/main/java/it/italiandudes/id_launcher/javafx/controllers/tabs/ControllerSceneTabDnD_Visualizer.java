@@ -11,6 +11,7 @@ import it.italiandudes.id_launcher.release.IDReleaseManager;
 import it.italiandudes.id_launcher.release.IDVersion;
 import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.id_launcher.utils.Defs;
+import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.Logger;
 import javafx.application.Platform;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -196,11 +196,22 @@ public final class ControllerSceneTabDnD_Visualizer {
         if (version == null) return;
         buttonStart.setDisable(true);
         JFXDefs.startServiceTask(() -> {
+            URLClassLoader classLoader = null;
             try {
                 URL jarUrl = version.toURI().toURL();
-                URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, ClassLoader.getSystemClassLoader());
+                classLoader = new URLClassLoader(new URL[]{jarUrl}, ClassLoader.getSystemClassLoader());
                 Class<?> dndVisualizerClass = classLoader.loadClass("it.italiandudes.dnd_visualizer.DnD_Visualizer");
-                Method mainMethod = dndVisualizerClass.getMethod("launcherMain", ClassLoader.class, String[].class);
+                try {
+                    dndVisualizerClass.getMethod("launcherMain", ClassLoader.class, String[].class).invoke(null, classLoader, new String[]{});
+                } catch (NoSuchMethodException e) {
+                    Platform.runLater(() -> {
+                        new ErrorAlert("ERRORE", "Errore di Versione", "Questa versione non supporta l'avvio da launcher.");
+                        buttonStart.setDisable(false);
+                    });
+                    Logger.log("This app version doesn't support launcher start!", new InfoFlags(true, false));
+                    classLoader.close();
+                    return;
+                }
                 LauncherBehaviour behaviour = LauncherBehaviour.values()[Settings.getSettings().getInt(Defs.SettingsKeys.LAUNCHER_BEHAVIOUR)];
                 switch (behaviour) {
                     case CLOSE_ON_LAUNCH:
@@ -215,19 +226,42 @@ public final class ControllerSceneTabDnD_Visualizer {
 
                     case STAY_OPEN:
                         Logger.log("Starting D&D Visualizer, staying open...");
-                        // TODO: implement loop hole to keep disabled the start button until app is closed
+                        break;
+
+                    case HIDE_UNTIL_CLOSE:
+                        Logger.log("Starting D&D Visualizer, hiding launcher...");
+                        Platform.runLater(() -> Client.getStage().hide());
                         break;
                 }
-                mainMethod.invoke(null, classLoader, new String[]{});
-                if (behaviour != LauncherBehaviour.CLOSE_ON_LAUNCH) {
-                    Logger.log("D&D Visualizer closed, restoring start...");
-                    Platform.runLater(() -> buttonStart.setDisable(false));
+                boolean behaviourCompatible = true;
+                try {
+                    dndVisualizerClass.getMethod("launcherLockUntilAppClose").invoke(null); // Blocker Method
+                } catch (NoSuchMethodException e) {
+                    Platform.runLater(() -> new ErrorAlert("ATTENZIONE", "Compatibilita'", "Questa versione dell'app non supporta i comportamenti launcher, potrebbero esserci potenziali problemi durante l'esecuzione."));
+                    behaviourCompatible = false;
+                    Logger.log("This app version doesn't support launcherLock, launcher behaviour not available...", new InfoFlags(true, false));
                 }
+                switch (behaviour) {
+                    case CLOSE_ON_LAUNCH:
+                        if (behaviourCompatible) Client.exit();
+                        break;
+
+                    case HIDE_UNTIL_CLOSE:
+                        Logger.log("D&D Visualizer closed, reshowing launcher...");
+                        Platform.runLater(() -> Client.getStage().show());
+                        break;
+                }
+                classLoader.close();
             } catch (Exception e) {
+                Platform.runLater(() -> new ErrorAlert("ERRORE", "Errore di Avvio", "Si e' verificato un errore durante l'apertura dell'app, ulteriori informazioni disponibili nel file di log."));
                 Logger.log(e);
+                try {
+                    if (classLoader != null) classLoader.close();
+                } catch (IOException ex) {
+                    Logger.log(e);
+                }
             }
             Platform.runLater(() -> buttonStart.setDisable(false));
         });
     }
-
 }

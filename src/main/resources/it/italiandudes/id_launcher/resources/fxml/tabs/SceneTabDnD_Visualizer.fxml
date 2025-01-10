@@ -38,7 +38,7 @@
                   <GridPane GridPane.rowIndex="1">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-                      <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
@@ -67,7 +67,7 @@
                                     <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TextField fx:id="textFieldReleaseTitle" alignment="CENTER" editable="false" maxHeight="1.7976931348623157E308" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                                    <TextField fx:id="textFieldReleaseTitle" alignment="CENTER" editable="false" maxHeight="1.7976931348623157E308" promptText="Titolo Versione" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
                                     <Button fx:id="buttonRefresh" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#refresh" GridPane.columnIndex="1">
                                        <graphic>
                                           <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
@@ -79,7 +79,7 @@
                                     </Button>
                                  </children>
                               </GridPane>
-                              <TextArea fx:id="textAreaPatchNotes" editable="false" maxWidth="500.0" style="-fx-font-size: 20px;" wrapText="true" GridPane.rowIndex="1" />
+                              <TextArea fx:id="textAreaPatchNotes" editable="false" maxWidth="500.0" promptText="Note di Rilascio" style="-fx-font-size: 20px;" wrapText="true" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
