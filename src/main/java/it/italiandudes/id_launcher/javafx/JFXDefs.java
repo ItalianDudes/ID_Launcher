@@ -29,7 +29,7 @@ public final class JFXDefs {
 
     // App Info
     public static final class AppInfo {
-        public static final String NAME = "ID Launcher";
+        public static final String NAME = "ItalianDudes Launcher";
         public static final Image LOGO = new Image(Defs.Resources.getAsStream(Resources.Image.Logo.LOGO_ID_LAUNCHER));
     }
 
