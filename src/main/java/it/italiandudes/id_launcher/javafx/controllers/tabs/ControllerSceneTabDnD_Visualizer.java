@@ -276,6 +276,7 @@ public final class ControllerSceneTabDnD_Visualizer {
             new ErrorAlert("ERRORE", "Errore di Selezione", "Selezionare prima una versione.");
             return;
         }
+        comboBoxVersionSelector.setDisable(true);
         buttonBrowse.setDisable(true);
         buttonDelete.setDisable(true);
         buttonStart.setDisable(true);
@@ -290,6 +291,7 @@ public final class ControllerSceneTabDnD_Visualizer {
                 } catch (NoSuchMethodException e) {
                     Platform.runLater(() -> {
                         new ErrorAlert("ERRORE", "Errore di Versione", "Questa versione non supporta l'avvio da launcher.");
+                        comboBoxVersionSelector.setDisable(false);
                         buttonBrowse.setDisable(false);
                         buttonDelete.setDisable(false);
                         buttonStart.setDisable(false);
@@ -348,6 +350,7 @@ public final class ControllerSceneTabDnD_Visualizer {
                 }
             }
             Platform.runLater(() -> {
+                comboBoxVersionSelector.setDisable(false);
                 buttonBrowse.setDisable(false);
                 buttonDelete.setDisable(false);
                 buttonStart.setDisable(false);
