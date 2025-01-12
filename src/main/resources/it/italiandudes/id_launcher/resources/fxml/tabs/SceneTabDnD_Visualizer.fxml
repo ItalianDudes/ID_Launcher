@@ -89,6 +89,8 @@
                   <GridPane alignment="CENTER" hgap="10.0" GridPane.rowIndex="2">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
                       <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
                     </columnConstraints>
                     <rowConstraints>
@@ -96,7 +98,32 @@
                     </rowConstraints>
                      <children>
                         <ComboBox fx:id="comboBoxVersionSelector" maxWidth="1.7976931348623157E308" onAction="#versionChanged" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" />
-                        <Button fx:id="buttonStart" disable="true" mnemonicParsing="false" onAction="#startVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="AVVIA" visible="false" GridPane.columnIndex="1" />
+                        <Button fx:id="buttonBrowse" disable="true" mnemonicParsing="false" onAction="#browseVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" GridPane.columnIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/file-explorer.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonDelete" disable="true" mnemonicParsing="false" onAction="#deleteVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" GridPane.columnIndex="2">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/trash.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonStart" disable="true" mnemonicParsing="false" onAction="#startVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" GridPane.columnIndex="3">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/play.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                      </children>
                   </GridPane>
                   <Button fx:id="buttonDownload" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startDownload" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="SCARICA" GridPane.rowIndex="2" />
