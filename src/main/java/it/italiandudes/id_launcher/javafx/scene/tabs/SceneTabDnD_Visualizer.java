@@ -1,11 +1,11 @@
 package it.italiandudes.id_launcher.javafx.scene.tabs;
 
-import it.italiandudes.id_launcher.javafx.controllers.ControllerSceneMainMenu;
-import it.italiandudes.idl.common.Logger;
 import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.components.SceneController;
+import it.italiandudes.id_launcher.javafx.controllers.ControllerSceneMainMenu;
 import it.italiandudes.id_launcher.javafx.controllers.tabs.ControllerSceneTabDnD_Visualizer;
 import it.italiandudes.id_launcher.utils.Defs;
+import it.italiandudes.idl.common.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import org.jetbrains.annotations.NotNull;

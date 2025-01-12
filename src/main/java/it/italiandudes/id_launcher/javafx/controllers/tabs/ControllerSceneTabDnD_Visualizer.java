@@ -1,6 +1,7 @@
 package it.italiandudes.id_launcher.javafx.controllers.tabs;
 
 import it.italiandudes.id_launcher.enums.LauncherBehaviour;
+import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.id_launcher.javafx.Client;
 import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.alerts.ConfirmationAlert;
@@ -11,18 +12,17 @@ import it.italiandudes.id_launcher.javafx.utils.Settings;
 import it.italiandudes.id_launcher.release.IDRelease;
 import it.italiandudes.id_launcher.release.IDReleaseManager;
 import it.italiandudes.id_launcher.release.IDVersion;
-import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.id_launcher.utils.Defs;
 import it.italiandudes.idl.common.InfoFlags;
 import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;

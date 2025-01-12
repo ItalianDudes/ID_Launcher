@@ -1,11 +1,11 @@
 package it.italiandudes.id_launcher.javafx;
 
-import it.italiandudes.idl.common.Logger;
 import it.italiandudes.id_launcher.javafx.alerts.ErrorAlert;
 import it.italiandudes.id_launcher.javafx.components.SceneController;
 import it.italiandudes.id_launcher.javafx.scene.SceneMainMenu;
 import it.italiandudes.id_launcher.javafx.utils.Settings;
 import it.italiandudes.id_launcher.javafx.utils.ThemeHandler;
+import it.italiandudes.idl.common.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
