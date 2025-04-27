@@ -1,7 +1,11 @@
 package it.italiandudes.id_launcher.release;
 
 import it.italiandudes.id_launcher.enums.ReleaseType;
+import it.italiandudes.id_launcher.exception.DeprecatedReleaseException;
+import it.italiandudes.id_launcher.utils.Defs;
+import it.italiandudes.idl.common.JarHandler;
 import it.italiandudes.idl.common.Logger;
+import it.italiandudes.idl.common.TargetPlatform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -19,8 +23,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public final class IDReleaseManager {
 
@@ -40,11 +44,13 @@ public final class IDReleaseManager {
                     response.append(new String(buffer, 0, bytesRead, StandardCharsets.UTF_8));
                 }
                 JSONArray jsonReleases = new JSONArray(response.toString());
-                IDRelease[] releases = new IDRelease[jsonReleases.length()];
+                ArrayList<@NotNull IDRelease> releases = new ArrayList<>();
                 for (int i=0; i<jsonReleases.length(); i++) {
-                    releases[i] = new IDRelease(jsonReleases.getJSONObject(i));
+                    try {
+                        releases.add(new IDRelease(jsonReleases.getJSONObject(i)));
+                    } catch (DeprecatedReleaseException ignored) {}
                 }
-                return new ArrayList<>(Arrays.asList(releases));
+                return releases;
             } finally {
                 connection.disconnect();
             }
@@ -53,7 +59,7 @@ public final class IDReleaseManager {
             return null;
         }
     }
-    public static void downloadRelease(@NotNull final IDRelease release, @NotNull File dest) throws IOException, URISyntaxException {
+    public static boolean downloadRelease(@NotNull final IDRelease release, @NotNull File dest) throws IOException, URISyntaxException {
         URL url = new URI(release.getDownloadLink()).toURL();
         InputStream is = url.openConnection().getInputStream();
         String releaseDestination = dest.getAbsolutePath() + File.separator + release.getVersion() + File.separator + release.getFilename();
@@ -62,6 +68,21 @@ public final class IDReleaseManager {
         }
         Files.copy(is, Paths.get(releaseDestination), StandardCopyOption.REPLACE_EXISTING);
         is.close();
+        if (Defs.CURRENT_PLATFORM != null) return validateReleaseManifestTargetPlatform(new File(releaseDestination));
+        else return true;
+    }
+    private static boolean validateReleaseManifestTargetPlatform(@NotNull final File releaseFile) {
+        try {
+            Attributes attributes = JarHandler.ManifestReader.readJarManifest(releaseFile);
+            String manifestTargetPlatform = JarHandler.ManifestReader.getValue(attributes, "Target-Platform");
+            if (manifestTargetPlatform == null) return false;
+            TargetPlatform targetPlatform = TargetPlatform.fromManifestTargetPlatform(manifestTargetPlatform);
+            if (targetPlatform == null) return false;
+            return Defs.CURRENT_PLATFORM == targetPlatform;
+        } catch (Exception e) {
+            Logger.log(e);
+            return false;
+        }
     }
     @Nullable
     public static IDRelease getLatestReleaseFromRepositoryReleases(@NotNull final ArrayList<@NotNull IDRelease> releases, @NotNull final ReleaseType releaseType) {

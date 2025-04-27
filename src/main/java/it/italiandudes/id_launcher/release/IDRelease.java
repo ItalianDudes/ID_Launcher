@@ -1,6 +1,9 @@
 package it.italiandudes.id_launcher.release;
 
 import it.italiandudes.id_launcher.enums.ReleaseType;
+import it.italiandudes.id_launcher.exception.DeprecatedReleaseException;
+import it.italiandudes.id_launcher.utils.Defs;
+import it.italiandudes.idl.common.TargetPlatform;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Objects;
 
 public final class IDRelease implements Comparator<IDRelease>, Comparable<IDRelease> {
 
@@ -21,7 +25,7 @@ public final class IDRelease implements Comparator<IDRelease>, Comparable<IDRele
     @NotNull private final String downloadLink;
 
     // Constructors
-    public IDRelease(@NotNull final JSONObject release) throws IOException {
+    public IDRelease(@NotNull final JSONObject release) throws IOException, DeprecatedReleaseException {
         try {
             this.releaseTitle = release.getString("name");
             this.patchNotes = release.getString("body");
@@ -36,12 +40,14 @@ public final class IDRelease implements Comparator<IDRelease>, Comparable<IDRele
                 JSONObject asset = assets.getJSONObject(i);
                 String assetName = asset.getString("name");
                 if (assetName.contains("jar")) {
-                    filename = assetName;
-                    downloadLink = asset.getString("browser_download_url");
-                    break;
+                    if (assetName.contains(Objects.requireNonNullElse(Defs.CURRENT_PLATFORM, TargetPlatform.LINUX).getManifestTargetPlatform().toUpperCase())) {
+                        filename = assetName;
+                        downloadLink = asset.getString("browser_download_url");
+                        break;
+                    }
                 }
             }
-            if (downloadLink == null) throw new IOException("Provided JSONObject doesn't contains download link");
+            if (downloadLink == null) throw new DeprecatedReleaseException("Provided JSONObject doesn't contains download link");
             this.downloadLink = downloadLink;
             this.filename = filename;
         } catch (JSONException e) {

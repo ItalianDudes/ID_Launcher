@@ -199,7 +199,10 @@ public final class ControllerSceneTabDnD_Visualizer {
                         throw new IOException("An error has occurred during mkdir");
                     }
                 }
-                IDReleaseManager.downloadRelease(latest, INSTALLATION_DIR);
+                boolean validation = IDReleaseManager.downloadRelease(latest, INSTALLATION_DIR);
+                if (!validation) {
+                    Platform.runLater(() -> new InformationAlert("AVVISO", "Validazione Versione Piattaforma Fallita", "Attenzione, la versione scaricata potrebbe non essere compatibile con il tuo dispositivo.\nIn caso non dovesse aprirsi eliminarla e riprovare."));
+                }
                 postInitialize();
             } catch (IOException e) {
                 Logger.log(e);
