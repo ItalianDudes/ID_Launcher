@@ -78,7 +78,8 @@ public final class ControllerSceneTabSettings {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Aggiornamento ItalianDudes Launcher");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Java Executable File", "*.jar"));
-        fileChooser.setInitialFileName(Defs.APP_FILE_NAME+"-"+latestVersion+".jar");
+        assert Defs.CURRENT_PLATFORM != null;
+        fileChooser.setInitialFileName(Defs.APP_FILE_NAME+"-"+latestVersion+"-"+Defs.CURRENT_PLATFORM.getManifestTargetPlatform().toUpperCase()+".jar");
         fileChooser.setInitialDirectory(new File(Defs.JAR_POSITION).getParentFile());
         File fileNewApp;
         try {
@@ -94,7 +95,6 @@ public final class ControllerSceneTabSettings {
         File finalFileNewApp = fileNewApp;
         JFXDefs.startServiceTask(() -> {
             try {
-                assert Defs.CURRENT_PLATFORM != null;
                 Updater.downloadNewVersion(finalFileNewApp.getAbsoluteFile().getParent() + File.separator + Defs.APP_FILE_NAME + "-" + latestVersion + "-" + Defs.CURRENT_PLATFORM.getManifestTargetPlatform().toUpperCase() + ".jar");
                 Platform.runLater(() -> {
                     if (new ConfirmationAlert("AGGIORNAMENTO", "Aggiornamento", "Download della nuova versione completato! Vuoi chiudere questa app?").result) {
