@@ -10,12 +10,6 @@ def versionNumber = '1.4'
 def versionType = 'RELEASE' // RELEASE | BETA | ALPHA | DEV
 def versionMarker = versionType.charAt(0)
 
-/*
- * Update IDL
- * Add an automatic check for updates every time the launcher starts?
- * DAMN FIX THE DOWNLOAD CHECKING FOR THE VALID PLATFORM TO BE DOWNLOADED
- */
-
 group = 'it.italiandudes'
 version = versionNumber+versionMarker
 
