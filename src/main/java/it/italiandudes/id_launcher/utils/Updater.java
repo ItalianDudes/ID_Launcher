@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class Updater {
 
     // Attributes
-    private static final String LATEST_PAGE = "https://github.com/ItalianDudes/ID_Launcher/releases/latest";
+    public static final String LATEST_PAGE = "https://github.com/ItalianDudes/ID_Launcher/releases/latest";
     private static final String LATEST_DOWNLOAD_PART = "https://github.com/ItalianDudes/ID_Launcher/releases/latest/download/ID_Launcher-";
 
     // Methods
@@ -37,7 +37,8 @@ public final class Updater {
     }
     public static void downloadNewVersion(@NotNull final String destPath) throws IOException, URISyntaxException {
         String latestVersion = getLatestVersion();
-        String downloadURL = LATEST_DOWNLOAD_PART+latestVersion+".jar";
+        assert Defs.CURRENT_PLATFORM != null;
+        String downloadURL = LATEST_DOWNLOAD_PART + latestVersion+ "-" + Defs.CURRENT_PLATFORM.getManifestTargetPlatform().toUpperCase() +".jar";
         URL url = new URI(downloadURL).toURL();
         InputStream is = url.openConnection().getInputStream();
         Files.copy(is, Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);

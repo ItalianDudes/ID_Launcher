@@ -1,5 +1,6 @@
 package it.italiandudes.id_launcher.javafx.controllers.tabs;
 
+import com.sun.javafx.application.HostServicesDelegate;
 import it.italiandudes.id_launcher.enums.LauncherBehaviour;
 import it.italiandudes.id_launcher.enums.ReleaseType;
 import it.italiandudes.id_launcher.javafx.Client;
@@ -7,6 +8,7 @@ import it.italiandudes.id_launcher.javafx.JFXDefs;
 import it.italiandudes.id_launcher.javafx.alerts.ConfirmationAlert;
 import it.italiandudes.id_launcher.javafx.alerts.ErrorAlert;
 import it.italiandudes.id_launcher.javafx.alerts.InformationAlert;
+import it.italiandudes.id_launcher.javafx.alerts.YesNoAlert;
 import it.italiandudes.id_launcher.javafx.components.SceneController;
 import it.italiandudes.id_launcher.javafx.controllers.ControllerSceneMainMenu;
 import it.italiandudes.id_launcher.javafx.scene.SceneLoading;
@@ -22,6 +24,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -91,7 +94,8 @@ public final class ControllerSceneTabSettings {
         File finalFileNewApp = fileNewApp;
         JFXDefs.startServiceTask(() -> {
             try {
-                Updater.downloadNewVersion(finalFileNewApp.getAbsoluteFile().getParent() + File.separator + Defs.APP_FILE_NAME+"-"+latestVersion+".jar");
+                assert Defs.CURRENT_PLATFORM != null;
+                Updater.downloadNewVersion(finalFileNewApp.getAbsoluteFile().getParent() + File.separator + Defs.APP_FILE_NAME + "-" + latestVersion + "-" + Defs.CURRENT_PLATFORM.getManifestTargetPlatform().toUpperCase() + ".jar");
                 Platform.runLater(() -> {
                     if (new ConfirmationAlert("AGGIORNAMENTO", "Aggiornamento", "Download della nuova versione completato! Vuoi chiudere questa app?").result) {
                         Client.exit();
@@ -118,6 +122,20 @@ public final class ControllerSceneTabSettings {
     // EDT
     @FXML
     private void checkForUpdates() {
+        if (Defs.CURRENT_PLATFORM == null) {
+            boolean result = new YesNoAlert("ERRORE", "Errore di Validazione","Impossibile aggiornare il launcher poiche' non e' possibile riconoscere la piattaforma corrente.\nPuoi scaricare la versione corretta al tuo dispositivo al link " + Updater.LATEST_PAGE + ".\nSe vuoi andare ora alla pagina per l'aggiornamento tramite browser predefinito clicca \"Si\".").result;
+            if (!result) return;
+            ClipboardContent link = new ClipboardContent();
+            link.putString(Updater.LATEST_PAGE);
+            Client.getSystemClipboard().setContent(link);
+            try {
+                HostServicesDelegate.getInstance(Client.getApplicationInstance()).showDocument(Updater.LATEST_PAGE);
+            } catch (Exception e) {
+                Logger.log(e);
+                new ErrorAlert("ERRORE", "Errore Interno", "Si e' verificato un errore durante l'apertura del browser predefinito.\nIl link alla pagina e' comunque disponibile negli appunti di sistema.");
+            }
+        }
+
         SceneController thisScene = Client.getScene();
         Client.setScene(SceneLoading.getScene());
         JFXDefs.startServiceTask(() -> {

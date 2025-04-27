@@ -22,6 +22,7 @@ import java.util.Objects;
 public final class Client extends Application {
 
     // Attributes
+    private static Application INSTANCE = null;
     private static Clipboard SYSTEM_CLIPBOARD = null;
     private static Stage STAGE = null;
     private static SceneController SCENE = null;
@@ -29,6 +30,7 @@ public final class Client extends Application {
     // JavaFX Application Main
     @Override
     public void start(Stage stage) {
+        INSTANCE = this;
         SYSTEM_CLIPBOARD = Clipboard.getSystemClipboard();
         Client.STAGE = stage;
         stage.setResizable(true);
@@ -67,6 +69,10 @@ public final class Client extends Application {
     }
 
     // Methods
+    @NotNull
+    public static Application getApplicationInstance() {
+        return INSTANCE;
+    }
     @NotNull
     public static Clipboard getSystemClipboard() {
         return SYSTEM_CLIPBOARD;
