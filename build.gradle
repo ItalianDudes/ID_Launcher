@@ -64,13 +64,13 @@ shadowJar {
 tasks.register('buildJar') {
     dependsOn shadowJar
     group = "Build"
-    description = "Build and assemble ID_Launcher"
+    description = "Build and assemble ID_Launcher for the current platform"
 }
 
 tasks.register('runClient', Exec) {
-    dependsOn shadowJar
+    dependsOn buildJar
     group = "Execution"
-    description = "Build, assemble and run ID_Launcher"
+    description = "Build, assemble and run ID_Launcher for the current platform"
     standardInput = System.in
     commandLine "java", "-jar", jar.archiveFile.get()
 }
