@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,20 +25,20 @@ public final class Updater {
     @Nullable
     public static String getLatestVersion() {
         try {
-            URL url = new URL(LATEST_PAGE);
+            URL url = new URI(LATEST_PAGE).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.getResponseCode();
             connection.disconnect();
             return connection.getURL().toString().split("/tag/")[1];
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             Logger.log(e);
         }
         return null;
     }
-    public static void downloadNewVersion(@NotNull final String destPath) throws IOException {
+    public static void downloadNewVersion(@NotNull final String destPath) throws IOException, URISyntaxException {
         String latestVersion = getLatestVersion();
         String downloadURL = LATEST_DOWNLOAD_PART+latestVersion+".jar";
-        URL url = new URL(downloadURL);
+        URL url = new URI(downloadURL).toURL();
         InputStream is = url.openConnection().getInputStream();
         Files.copy(is, Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
         is.close();

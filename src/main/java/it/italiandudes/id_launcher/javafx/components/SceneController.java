@@ -27,10 +27,7 @@ public final class SceneController {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SceneController)) return false;
-
-        SceneController that = (SceneController) o;
-
+        if (!(o instanceof SceneController that)) return false;
         if (!getParent().equals(that.getParent())) return false;
         return getController().equals(that.getController());
     }

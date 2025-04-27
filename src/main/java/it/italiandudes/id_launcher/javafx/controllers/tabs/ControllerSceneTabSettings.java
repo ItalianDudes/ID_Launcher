@@ -28,6 +28,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.jar.Attributes;
 
 public final class ControllerSceneTabSettings {
@@ -56,8 +57,7 @@ public final class ControllerSceneTabSettings {
     @FXML
     private void initialize() {
         JFXDefs.startServiceTask(() -> {
-            //noinspection StatementWithEmptyBody
-            while (!configurationComplete);
+            while (!configurationComplete) Thread.onSpinWait();
             Platform.runLater(() -> {
                 toggleButtonEnableDarkMode.setSelected(Settings.getSettings().getBoolean(Defs.SettingsKeys.ENABLE_DARK_MODE));
                 if (toggleButtonEnableDarkMode.isSelected()) imageViewEnableDarkMode.setImage(DARK_MODE);
@@ -103,6 +103,12 @@ public final class ControllerSceneTabSettings {
                 Logger.log(e);
                 Platform.runLater(() -> {
                     new ErrorAlert("ERRORE", "Errore di Download", "Si e' verificato un errore durante il download della nuova versione dell'app.");
+                    Client.setScene(thisScene);
+                });
+            } catch (URISyntaxException e) {
+                Logger.log(e);
+                Platform.runLater(() -> {
+                    new ErrorAlert("ERRORE", "Errore di Validazione", "Si e' verificato un errore durante la validazione del link di download della nuova versione dell'app.");
                     Client.setScene(thisScene);
                 });
             }

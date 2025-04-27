@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.jar.Attributes;
-import java.util.stream.Collectors;
 
 public final class ControllerSceneTabDnD_Visualizer {
 
@@ -76,8 +76,7 @@ public final class ControllerSceneTabDnD_Visualizer {
     @FXML
     private void initialize() {
         JFXDefs.startServiceTask(() -> {
-            //noinspection StatementWithEmptyBody
-            while (!configurationComplete);
+            while (!configurationComplete) Thread.onSpinWait();
             postInitialize();
         });
     }
@@ -113,7 +112,7 @@ public final class ControllerSceneTabDnD_Visualizer {
                     buttonBrowse.setVisible(true);
                     buttonDelete.setVisible(true);
                     buttonStart.setVisible(true);
-                    comboBoxVersionSelector.getItems().addAll(launchableJarList.stream().map(IDVersion::new).collect(Collectors.toList()));
+                    comboBoxVersionSelector.getItems().addAll(launchableJarList.stream().map(IDVersion::new).toList());
                     comboBoxVersionSelector.getSelectionModel().selectFirst();
                     comboBoxVersionSelector.setVisible(true);
                 });
@@ -206,6 +205,12 @@ public final class ControllerSceneTabDnD_Visualizer {
                 Logger.log(e);
                 Platform.runLater(() -> {
                     new ErrorAlert("ERRORE", "Errore di I/O", "Si e' verificato un errore durante il download.");
+                    resetController();
+                });
+            } catch (URISyntaxException e) {
+                Logger.log(e);
+                Platform.runLater(() -> {
+                    new ErrorAlert("ERRORE", "Errore di Validazione", "Si e' verificato un errore durante la validazione del link di download.");
                     resetController();
                 });
             }

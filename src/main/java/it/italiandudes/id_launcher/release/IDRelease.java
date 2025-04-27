@@ -112,9 +112,7 @@ public final class IDRelease implements Comparator<IDRelease>, Comparable<IDRele
     }
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof IDRelease)) return false;
-
-        IDRelease release = (IDRelease) o;
+        if (!(o instanceof IDRelease release)) return false;
         return getFilename().equals(release.getFilename()) && getReleaseTitle().equals(release.getReleaseTitle()) && getPatchNotes().equals(release.getPatchNotes()) && getVersion().equals(release.getVersion()) && getReleaseType() == release.getReleaseType() && getDownloadLink().equals(release.getDownloadLink());
     }
     @Override

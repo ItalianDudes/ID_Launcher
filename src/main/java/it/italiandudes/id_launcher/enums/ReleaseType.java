@@ -18,13 +18,13 @@ public enum ReleaseType {
     @Nullable
     public static ReleaseType fromReleaseMarkerToReleaseType(@NotNull final String versionMarker) {
         if (versionMarker.length() != 1) return null;
-        switch (versionMarker) {
-            case "R": return RELEASE;
-            case "B": return BETA;
-            case "A": return ALPHA;
-            case "D": return DEV;
-            default: return null;
-        }
+        return switch (versionMarker) {
+            case "R" -> RELEASE;
+            case "B" -> BETA;
+            case "A" -> ALPHA;
+            case "D" -> DEV;
+            default -> null;
+        };
     }
 
     // Attributes
