@@ -6,7 +6,7 @@ plugins {
 }
 
 // Versioning
-def versionNumber = '1.4.1'
+def versionNumber = '1.5'
 def versionType = 'RELEASE' // RELEASE | BETA | ALPHA | DEV
 def versionMarker = versionType.charAt(0)
 
@@ -37,7 +37,7 @@ javafx {
 // Dependencies
 dependencies {
     compileOnly 'org.jetbrains:annotations:26.0.1'
-    implementation 'org.apache.commons:commons-lang3:3.17.0'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'commons-io:commons-io:2.18.0'
     implementation 'commons-codec:commons-codec:1.17.1'
     implementation 'it.italiandudes:idl:1.2.2'

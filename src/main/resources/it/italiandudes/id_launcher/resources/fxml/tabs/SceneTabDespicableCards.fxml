@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--suppress JavaFxDefaultTag -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" styleClass="transparent-scroll-pane" xmlns="http://javafx.com/javafx/21.0.7" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.id_launcher.javafx.controllers.tabs.ControllerSceneTabDespicableCards">
+   <content>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <GridPane alignment="CENTER" layoutX="10.0" layoutY="578.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                  <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                  <RowConstraints valignment="CENTER" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <Label style="-fx-font-size: 32px; -fx-font-weight: bold;" text="DESPICABLE CARDS" />
+                  <GridPane GridPane.rowIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fitHeight="550.0" fitWidth="550.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../image/logo/dnd_visualizer.png" />
+                           </image>
+                        </ImageView>
+                        <GridPane vgap="10.0" GridPane.columnIndex="1">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane hgap="5.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <TextField fx:id="textFieldReleaseTitle" alignment="CENTER" editable="false" maxHeight="1.7976931348623157E308" promptText="Titolo Versione" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                                    <Button fx:id="buttonRefresh" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#refresh" GridPane.columnIndex="1">
+                                       <graphic>
+                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../image/refresh.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <TextArea fx:id="textAreaPatchNotes" editable="false" maxWidth="500.0" promptText="Note di Rilascio" style="-fx-font-size: 20px;" wrapText="true" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </GridPane>
+                  <ProgressBar fx:id="progressBarDownload" maxWidth="1.7976931348623157E308" style="-fx-font-size: 24px;" visible="false" GridPane.rowIndex="2" />
+                  <Label fx:id="labelDownload" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="DOWNLOAD IN CORSO..." textAlignment="CENTER" visible="false" GridPane.rowIndex="2" />
+                  <GridPane alignment="CENTER" hgap="10.0" GridPane.rowIndex="2">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                      <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ComboBox fx:id="comboBoxVersionSelector" maxWidth="1.7976931348623157E308" onAction="#versionChanged" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" />
+                        <Button fx:id="buttonBrowse" disable="true" mnemonicParsing="false" onAction="#browseVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" GridPane.columnIndex="1">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/file-explorer.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonDelete" disable="true" mnemonicParsing="false" onAction="#deleteVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" GridPane.columnIndex="2">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/trash.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="buttonStart" disable="true" mnemonicParsing="false" onAction="#startVersion" style="-fx-font-size: 24px; -fx-font-weight: bold;" visible="false" GridPane.columnIndex="3">
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../image/play.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                     </children>
+                  </GridPane>
+                  <Button fx:id="buttonDownload" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startDownload" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="SCARICA" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

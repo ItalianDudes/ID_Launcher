@@ -51,6 +51,7 @@ public final class JFXDefs {
             public static final class Tabs {
                 private static final String TABS_DIR = FXML_DIR + "tabs/";
                 public static final String FXML_TAB_DND_VISUALIZER = TABS_DIR + "SceneTabDnD_Visualizer.fxml";
+                public static final String FXML_TAB_DESPICABLE_CARDS = TABS_DIR + "SceneTabDespicableCards.fxml";
                 public static final String FXML_TAB_SETTINGS = TABS_DIR + "SceneTabSettings.fxml";
             }
         }
