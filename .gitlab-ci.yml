@@ -1,0 +1,63 @@
+stages:
+  - build
+  - publish
+
+variables:
+  PROJECT_ID: "$CI_PROJECT_ID"
+  GROUP_NAME: "ItalianDudes"
+  PROJECT_NAME: "ID_Launcher"
+
+build_every_commit:
+  stage: build
+  image: gradle:8.14-jdk21
+  script:
+    - chmod +x ./gradlew
+    - ./gradlew buildJar
+  except:
+    - tags
+
+release_jars:
+  stage: build
+  when: manual
+  image: gradle:8.14-jdk21
+  script:
+    - chmod +x ./gradlew
+    - VERSION=$(grep "^version" build.gradle | sed "s/version *= *['\"]//" | sed "s/['\"]//")
+    - echo "VERSION=$VERSION" > version.env
+    - ./gradlew clean
+    - ./gradlew deployJarForLinux
+    - ./gradlew clean
+    - ./gradlew deployJarForWindows
+    - ./gradlew clean
+    - ./gradlew deployJarForMac
+    - ./gradlew clean
+    - ./gradlew deployJarForMacAArch64
+  artifacts:
+    paths:
+      - build/libs/*.jar
+      - version.env
+    expire_in: 1 hour
+  only:
+    - tags
+
+publish_jars:
+  stage: publish
+  needs:
+    - release_jars
+  when: manual
+  image: curlimages/curl:latest
+  script:
+    - source version.env
+    - echo Publishing Version Target $VERSION
+    - |
+      for JAR in ./build/libs/*.jar; do
+        if [ -f "$JAR" ]; then
+          FILENAME=$(basename "$JAR")
+          echo "Uploading $FILENAME..."
+          curl --header "JOB-TOKEN: $CI_JOB_TOKEN" \
+               --upload-file "$JAR" \
+               "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/$VERSION/$FILENAME"
+          echo "Uploaded: $FILENAME"
+        fi
+      done
+    - echo Publishing Complete.
