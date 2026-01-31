@@ -2,11 +2,6 @@ stages:
   - build
   - publish
 
-variables:
-  PROJECT_ID: "$CI_PROJECT_ID"
-  GROUP_NAME: "ItalianDudes"
-  PROJECT_NAME: "ID_Launcher"
-
 build_every_commit:
   stage: build
   image: gradle:8.14-jdk21
